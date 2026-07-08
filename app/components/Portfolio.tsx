@@ -5,7 +5,8 @@ import { Strategy } from "../types";
 interface Props {
   core: Strategy;
   satellites: Strategy[];
-  onReset: () => void;
+  onReset?: () => void;
+  hideReset?: boolean;
 }
 
 function ReturnBadge({ value }: { value: number }) {
@@ -17,7 +18,7 @@ function ReturnBadge({ value }: { value: number }) {
   );
 }
 
-export default function Portfolio({ core, satellites, onReset }: Props) {
+export default function Portfolio({ core, satellites, onReset, hideReset }: Props) {
   const totalWeight = [core, ...satellites].reduce((a, s) => a + s.weight, 0);
   const weightedReturn = [core, ...satellites].reduce(
     (a, s) => a + (s.return * s.weight) / 100,
@@ -105,12 +106,14 @@ export default function Portfolio({ core, satellites, onReset }: Props) {
         </div>
       </div>
 
-      <button
-        onClick={onReset}
-        className="w-full py-2 rounded-xl bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm transition-colors"
-      >
-        Carica nuovo file
-      </button>
+      {!hideReset && (
+        <button
+          onClick={onReset}
+          className="w-full py-2 rounded-xl bg-gray-700 hover:bg-gray-600 text-gray-300 text-sm transition-colors"
+        >
+          Carica nuovo file
+        </button>
+      )}
     </div>
   );
 }
